@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Support Agent — WordPress & SaaS Customer Support Automation</title>
+  <meta name="description" content="White-label AI customer support chatbot trained on your product docs. Instant answers, automatic escalation, live admin dashboard." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+<!-- ── Navbar ──────────────────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <span class="navbar-brand">⚡ AI Support Agent</span>
+  <div class="navbar-links">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="admin.html">Admin Dashboard</a>
+  </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <span class="hero-badge">Built for WordPress &amp; SaaS</span>
+  <h1>AI Support That Knows <span>Your Product</span></h1>
+  <p>Train it on your docs in 5 minutes. It answers like your best support engineer — 24/7, instantly, for any number of users.</p>
+  <div class="hero-buttons">
+    <a href="#onboard" class="btn btn-primary">🚀 Get Started Free</a>
+    <a href="admin.html" class="btn btn-outline">View Dashboard</a>
+  </div>
+</section>
+
+<!-- ── Stats ────────────────────────────────────────────────────────────────── -->
+<div class="stats-strip">
+  <div class="stat-item"><strong>5 min</strong><span>Setup time</span></div>
+  <div class="stat-item"><strong>24/7</strong><span>Always available</span></div>
+  <div class="stat-item"><strong>100%</strong><span>Product-specific answers</span></div>
+  <div class="stat-item"><strong>$0</strong><span>To get started</span></div>
+</div>
+
+<!-- ── Features ─────────────────────────────────────────────────────────────── -->
+<section class="section" id="features">
+  <div class="container">
+    <h2 class="section-title">Everything you need</h2>
+    <p class="section-sub">One tool that handles your entire support workflow — from doc indexing to human escalation.</p>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>Trained on your docs</h3>
+        <p>Paste your documentation URL and the agent indexes every page automatically. It only answers from your product knowledge — never from competitor data.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant answers</h3>
+        <p>Powered by Claude AI with RAG retrieval. Users get accurate, cited answers in under 2 seconds — no ticket queue needed.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔁</div>
+        <h3>Smart escalation</h3>
+        <p>Automatically detects refunds, billing issues, and frustrated users, then flags those conversations for your human team immediately.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Admin dashboard</h3>
+        <p>See every conversation, track resolution vs. escalation rates, and spot documentation gaps — all in a clean real-time dashboard.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🧩</div>
+        <h3>One-line embed</h3>
+        <p>Add the chat widget to any WordPress site, SaaS app, or help center with a single script tag. No coding required.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Fully self-hosted</h3>
+        <p>Your data never leaves your server. Run it on your own VPS, Docker container, or cloud instance for complete privacy control.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── How it works ──────────────────────────────────────────────────────────── -->
+<section class="section" id="how-it-works" style="background: white;">
+  <div class="container">
+    <h2 class="section-title">How it works</h2>
+    <p class="section-sub">From docs URL to live chat widget in four steps.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h4>Paste your docs URL</h4>
+          <p>The agent crawls your documentation, help center, and FAQ pages — extracting and chunking all content into a searchable knowledge base.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h4>Knowledge base is indexed</h4>
+          <p>Every page is converted into vector embeddings stored locally. This is what lets the agent find the right answer for any question instantly.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h4>Copy your embed code</h4>
+          <p>You get a two-line script snippet. Paste it into any WordPress page, custom HTML, or your app's layout template.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <h4>Go live — agent handles the rest</h4>
+          <p>Users see a chat bubble. They ask questions. The agent finds the answer from your docs and responds immediately. You only step in for escalations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Onboarding form ────────────────────────────────────────────────────────── -->
+<section class="section" id="onboard">
+  <div class="container">
+    <h2 class="section-title">Index your docs now</h2>
+    <p class="section-sub">Takes about 2–3 minutes. No account needed.</p>
+
+    <div class="onboard-card">
+      <form id="onboard-form">
+        <div class="form-group">
+          <label for="product-name">Product name</label>
+          <input type="text" id="product-name" placeholder="e.g. Astra Theme" required />
+        </div>
+        <div class="form-group">
+          <label for="docs-url">Documentation URL</label>
+          <input type="url" id="docs-url" placeholder="https://docs.yourplugin.com" required />
+          <p class="form-hint">The agent will crawl this URL and all linked pages on the same domain (up to 50 pages).</p>
+        </div>
+        <button type="submit" id="onboard-btn" class="btn btn-primary" style="width:100%; justify-content:center;">
+          🚀 Index Documentation
+        </button>
+      </form>
+
+      <div class="progress-wrap" id="progress-wrap">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <p class="progress-label" id="progress-label">Starting…</p>
+      </div>
+
+      <div class="success-box" id="success-box">
+        <div class="success-icon">🎉</div>
+        <h4>Your agent is ready!</h4>
+        <p>Copy and paste this snippet before <code>&lt;/body&gt;</code> on your site:</p>
+        <pre class="embed-snippet" id="embed-code"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pricing ────────────────────────────────────────────────────────────────── -->
+<section class="section" id="pricing" style="background: white;">
+  <div class="container">
+    <h2 class="section-title">Simple pricing for clients</h2>
+    <p class="section-sub">Charge your clients monthly. Keep the margin. You control the pricing.</p>
+    <div class="pricing-grid">
+
+      <div class="pricing-card">
+        <span class="plan-badge">Starter</span>
+        <div class="plan-price"><sup>$</sup>199<sub>/mo</sub></div>
+        <p class="plan-desc">For small plugins and indie developers</p>
+        <ul class="plan-features">
+          <li>1 agent / product</li>
+          <li>Up to 50 doc pages</li>
+          <li>Unlimited conversations</li>
+          <li>Admin dashboard</li>
+          <li>Email escalation alerts</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card featured">
+        <span class="plan-badge">Growth</span>
+        <div class="plan-price"><sup>$</sup>499<sub>/mo</sub></div>
+        <p class="plan-desc">For established WordPress businesses</p>
+        <ul class="plan-features">
+          <li>5 agents / products</li>
+          <li>Up to 200 doc pages each</li>
+          <li>Unlimited conversations</li>
+          <li>Priority human escalation</li>
+          <li>Monthly analytics report</li>
+          <li>Custom widget branding</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <span class="plan-badge">Agency</span>
+        <div class="plan-price"><sup>$</sup>999<sub>/mo</sub></div>
+        <p class="plan-desc">White-label for agencies reselling to clients</p>
+        <ul class="plan-features">
+          <li>Unlimited agents</li>
+          <li>Unlimited pages</li>
+          <li>White-label branding</li>
+          <li>Client sub-accounts</li>
+          <li>Dedicated support</li>
+          <li>Custom integrations</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────────────── -->
+<footer>
+  <p>AI Support Agent · Built with ❤️ · <a href="https://github.com/devmohsin" target="_blank">github.com/devmohsin</a></p>
+</footer>
+
+<!-- Live demo widget on the landing page itself -->
+<script>
+  window.AISupportConfig = {
+    agentId:        'demo',
+    agentName:      'Support Agent',
+    apiBase:        'http://localhost:8000',
+    cssBase:        '',
+    welcomeMessage: 'Hi! I\'m the demo support agent. Ask me anything.',
+    quickPrompts:   ['How does this work?', 'How do I install it?', 'What does it cost?'],
+  };
+</script>
+<script src="js/widget.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>

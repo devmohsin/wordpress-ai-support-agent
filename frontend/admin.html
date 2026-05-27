@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — AI Support Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    /* ── Admin-specific styles ──────────────────────────────────────────────── */
+    body { background: var(--bg); }
+
+    .admin-layout {
+      display: flex;
+      min-height: calc(100vh - 64px);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+    .sidebar-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      padding: 0 8px;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: background .15s, color .15s;
+      text-decoration: none;
+      margin-bottom: 2px;
+    }
+    .sidebar-link:hover,
+    .sidebar-link.active {
+      background: var(--primary-light);
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* Main content */
+    .admin-main {
+      flex: 1;
+      padding: 28px 32px;
+      overflow-y: auto;
+    }
+
+    /* Page header */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .page-title { font-size: 22px; font-weight: 800; }
+    .page-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Stat cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      border: 1px solid var(--border);
+    }
+    .stat-card .label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .stat-card .value {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .stat-card.primary .value { color: var(--primary); }
+    .stat-card.success .value { color: #22C55E; }
+    .stat-card.danger  .value { color: var(--accent); }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .toolbar input[type="search"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 9px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color .15s;
+      background: var(--white);
+      color: var(--text);
+    }
+    .toolbar input[type="search"]:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .toolbar select {
+      padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--white);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .toolbar select:focus { outline: none; border-color: var(--primary); }
+
+    /* Conversation list */
+    .conv-list-wrap {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    #conv-list { display: flex; flex-direction: column; }
+
+    .conv-row {
+      display: flex;
+      gap: 14px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background .15s;
+      align-items: flex-start;
+    }
+    .conv-row:last-child { border-bottom: none; }
+    .conv-row:hover { background: var(--bg); }
+    .conv-row.escalated { border-left: 3px solid var(--accent); }
+
+    .conv-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .conv-body { flex: 1; min-width: 0; }
+    .conv-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .conv-id   { font-size: 13px; font-weight: 700; color: var(--text); }
+    .conv-preview {
+      font-size: 13px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .conv-stats { font-size: 12px; color: var(--text-muted); display: flex; gap: 12px; }
+
+    /* Badges */
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 100px;
+    }
+    .badge-green { background: #ECFDF5; color: #065F46; }
+    .badge-red   { background: #FEF2F2; color: #991B1B; }
+
+    /* Detail panel */
+    .detail-panel {
+      position: fixed;
+      top: 64px;
+      right: 0;
+      width: 420px;
+      height: calc(100vh - 64px);
+      background: var(--white);
+      border-left: 1px solid var(--border);
+      box-shadow: -4px 0 24px rgba(0,0,0,.07);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform .22s ease;
+      z-index: 200;
+    }
+    .detail-panel.open { transform: translateX(0); }
+
+    .detail-panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .detail-panel-header strong { font-size: 15px; }
+    #close-detail {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 4px 10px;
+    }
+
+    #detail-content { flex: 1; overflow-y: auto; padding: 20px; }
+
+    .detail-header {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+    .detail-header code {
+      background: var(--border);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .detail-messages { display: flex; flex-direction: column; gap: 12px; }
+    .detail-msg { display: flex; flex-direction: column; gap: 4px; }
+    .detail-msg.user  { align-items: flex-end; }
+    .detail-msg.bot   { align-items: flex-start; }
+    .detail-role { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+    .detail-bubble {
+      max-width: 90%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .detail-msg.user .detail-bubble {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .detail-msg.bot .detail-bubble {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 4px;
+    }
+    .detail-time    { font-size: 11px; color: var(--text-muted); }
+    .detail-sources { font-size: 11px; display: flex; flex-wrap: wrap; gap: 4px; }
+    .detail-sources a {
+      background: rgba(108,99,255,.08);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 100px;
+    }
+
+    /* Empty / loading states */
+    .loading-spinner,
+    .empty-state,
+    .error-state {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .error-state { color: var(--accent); }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .admin-main { padding: 20px 16px; }
+      .detail-panel { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <span class="navbar-brand">⚡ AI Support Agent</span>
+  <div class="navbar-links">
+    <a href="index.html">← Back to Home</a>
+    <a href="index.html#onboard">Add New Agent</a>
+  </div>
+</nav>
+
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-label">Navigation</div>
+    <a class="sidebar-link active" href="admin.html">📊 Conversations</a>
+    <a class="sidebar-link" href="index.html#onboard">➕ New Agent</a>
+    <a class="sidebar-link" href="index.html">🏠 Home</a>
+    <br />
+    <div class="sidebar-label">Resources</div>
+    <a class="sidebar-link" href="https://github.com/devmohsin" target="_blank">GitHub</a>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Conversations</div>
+        <div class="page-subtitle">All support sessions across your agents</div>
+      </div>
+      <button id="refresh-btn" class="btn btn-outline">🔄 Refresh</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card primary">
+        <div class="label">Total Conversations</div>
+        <div class="value" id="stat-total">—</div>
+      </div>
+      <div class="stat-card success">
+        <div class="label">Resolved</div>
+        <div class="value" id="stat-resolved">—</div>
+      </div>
+      <div class="stat-card danger">
+        <div class="label">Escalated</div>
+        <div class="value" id="stat-escalated">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Total Messages</div>
+        <div class="value" id="stat-messages">—</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <input type="search" id="search-input" placeholder="Search conversations…" />
+      <select id="filter-status">
+        <option value="all">All statuses</option>
+        <option value="resolved">Resolved</option>
+        <option value="escalated">Escalated</option>
+      </select>
+    </div>
+
+    <!-- Conversation list -->
+    <div class="conv-list-wrap">
+      <div id="conv-list">
+        <div class="loading-spinner">Loading conversations…</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Detail side panel -->
+<div class="detail-panel" id="detail-panel">
+  <div class="detail-panel-header">
+    <strong>Conversation Detail</strong>
+    <button id="close-detail">✕ Close</button>
+  </div>
+  <div id="detail-content"></div>
+</div>
+
+<script>window.API_BASE = 'http://localhost:8000';</script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>
