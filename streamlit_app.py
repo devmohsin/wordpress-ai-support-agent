@@ -2,15 +2,13 @@
 AI Support Agent — Streamlit Demo
 Deploy free at share.streamlit.io
 
-Reuses the same backend modules (scraper, vector_store, chat_engine)
-as the full FastAPI version. Perfect for demos and client pitching.
+Uses lightweight Streamlit-specific backends (no ChromaDB, no aiohttp)
+so it installs cleanly on Streamlit Cloud with zero compilation errors.
 """
 
 import os
 import sys
-import asyncio
 import uuid
-import concurrent.futures
 from pathlib import Path
 from datetime import datetime
 
@@ -125,21 +123,17 @@ for _k, _v in _defaults.items():
 
 
 # ── Cached backend singletons (survive Streamlit reruns) ──────────────────────
+# Uses lightweight Streamlit-specific modules (sklearn TF-IDF, sync requests)
+# — no ChromaDB or aiohttp, so Streamlit Cloud installs them in seconds.
 @st.cache_resource(show_spinner=False)
 def _load_services():
-    from vector_store import VectorStore
-    from chat_engine  import ChatEngine
-    db_path = str(Path(__file__).parent / "chroma_db")
-    vs = VectorStore(persist_path=db_path)
-    return vs, ChatEngine(vs)
+    from streamlit_vector_store import StreamlitVectorStore
+    from streamlit_chat_engine  import StreamlitChatEngine
+    db_path = str(Path(__file__).parent / "vector_data")
+    vs = StreamlitVectorStore(persist_path=db_path)
+    return vs, StreamlitChatEngine(vs)
 
 vector_store, chat_engine = _load_services()
-
-
-# ── Async helper: run coroutines safely from Streamlit's sync context ──────────
-def run_async(coro):
-    with concurrent.futures.ThreadPoolExecutor() as pool:
-        return pool.submit(asyncio.run, coro).result()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -190,11 +184,12 @@ with st.sidebar:
 
             progress = st.progress(0, text="Starting crawler…")
             try:
-                from scraper import DocScraper
-                scraper = DocScraper()
+                # Use the sync scraper — no aiohttp, works on Streamlit Cloud
+                from streamlit_scraper import StreamlitDocScraper
+                scraper = StreamlitDocScraper()
 
                 progress.progress(15, text=f"Crawling {docs_url} …")
-                docs = run_async(scraper.scrape(docs_url, max_pages=max_pages))
+                docs = scraper.scrape(docs_url, max_pages=max_pages)
 
                 progress.progress(60, text=f"Indexing {len(docs)} pages…")
                 vector_store.add_documents(docs, agent_id, product_name)
@@ -318,13 +313,14 @@ with tab_chat:
             with st.chat_message("assistant", avatar="🤖"):
                 with st.spinner("Searching your docs…"):
                     try:
-                        response = run_async(chat_engine.get_response(
+                        # Sync call — no run_async needed with StreamlitChatEngine
+                        response = chat_engine.get_response(
                             message=user_input,
                             agent_id=st.session_state.active_agent_id,
                             session_id=st.session_state.session_id,
                             history=st.session_state.messages[:-1],
                             product_name=st.session_state.active_agent_name,
-                        ))
+                        )
 
                         st.markdown(response["answer"])
 
