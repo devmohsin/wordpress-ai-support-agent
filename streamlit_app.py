@@ -106,25 +106,32 @@ with st.sidebar:
 
     # ── API Key section ───────────────────────────────────────────────────────
     st.markdown("### 🔑 API Key")
+    st.caption("Paste an **Anthropic** key (`sk-ant-...`) or a **Groq** key (`gsk_...`) — detected automatically.")
 
     key_input = st.text_input(
-        "Anthropic API Key",
+        "API Key",
         value=st.session_state.api_key,
         type="password",
-        placeholder="sk-ant-...",
-        help="Get your key at console.anthropic.com",
+        placeholder="sk-ant-...  or  gsk_...",
+        help="Anthropic: console.anthropic.com  |  Groq (free): console.groq.com",
     )
 
     # Update session state + env var whenever the field changes
     if key_input != st.session_state.api_key:
-        st.session_state.api_key  = key_input
-        os.environ["ANTHROPIC_API_KEY"] = key_input
+        st.session_state.api_key         = key_input
+        os.environ["ANTHROPIC_API_KEY"]  = key_input
 
-    if st.session_state.api_key:
-        st.success("✅ API key is set")
+    # Show which provider is detected
+    key = st.session_state.api_key
+    if key.startswith("gsk_"):
+        st.success("✅ Groq detected — using **Llama 3.3 70B** (free)")
+    elif key.startswith("sk-ant-"):
+        st.success("✅ Anthropic detected — using **Claude Haiku**")
+    elif key:
+        st.error("❌ Key not recognised — must start with `sk-ant-` or `gsk_`")
     else:
-        st.warning("Enter your key to enable the agent")
-        st.caption("[Get a free key →](https://console.anthropic.com)")
+        st.warning("Enter your API key to enable the agent")
+        st.caption("🆓 Free Groq key → [console.groq.com](https://console.groq.com)")
 
     st.divider()
 
