@@ -1,5 +1,10 @@
 # AI Support Agent for WordPress & SaaS
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://wordpress-ai-support-agent.streamlit.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-devmohsin-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/devmohsin)
+
+> 🚀 **[Try the Live Demo →](https://wordpress-ai-support-agent.streamlit.app/)**
+
 A self-hosted AI customer support chatbot that trains on your product documentation and answers user questions instantly — 24/7, on your own server.
 
 ## What it does
